@@ -39,13 +39,31 @@ app.post('/upload/:langCode', upload.single('image'), (req, res) => {
     filePath,
     langCode, // Use the language code from the URL parameter
     {
-      logger: info => console.loAg(info) // Log progress
+      logger: info => console.log(info) // Log progress
     }
   ).then(({ data: { text } }) => {
     res.json({ text });
+
+    // Remove the file after the text extraction
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('Error removing file:', err);
+      } else {
+        console.log('File removed:', filePath);
+      }
+    });
   }).catch(err => {
     console.error(err);
     res.status(500).send('Error occurred during text extraction');
+
+    // Remove the file in case of an error
+    fs.unlink(filePath, (unlinkErr) => {
+      if (unlinkErr) {
+        console.error('Error removing file:', unlinkErr);
+      } else {
+        console.log('File removed after error:', filePath);
+      }
+    });
   });
 });
 
