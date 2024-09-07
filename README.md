@@ -20,3 +20,5 @@ Before you begin, ensure you have met the following requirements:
    ```bash
    git clone https://github.com/AjayDattu/Image-text-api/
    cd image-text-api
+   npm install
+   npm start
